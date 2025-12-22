@@ -1,14 +1,21 @@
-import { dataService } from '../services/dataService';
-import { getDoc, setDoc, Timestamp } from 'firebase/firestore';
+// Mock Firebase SDK first, before any imports
+jest.mock('firebase/app', () => ({
+    initializeApp: jest.fn()
+}));
 
-// Mock Firebase SDK
 jest.mock('firebase/firestore', () => {
+    const mockWithConverter = jest.fn();
+    const mockDocRef = {
+        withConverter: mockWithConverter,
+        id: 'test-doc-id'
+    };
+    // Ensure withConverter returns the same object (or a doc ref) for chaining
+    mockWithConverter.mockReturnValue(mockDocRef);
+
     return {
         getFirestore: jest.fn(),
         collection: jest.fn(),
-        doc: jest.fn(() => ({
-            withConverter: jest.fn().mockReturnThis()
-        })),
+        doc: jest.fn(() => mockDocRef),
         getDoc: jest.fn(),
         setDoc: jest.fn(),
         updateDoc: jest.fn(),
@@ -24,6 +31,10 @@ jest.mock('firebase/firestore', () => {
 jest.mock('../config/firebase', () => ({
     db: {}
 }));
+
+// Now import after mocking
+import { dataService } from '../services/dataService';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 describe('Data Service Tests', () => {
     const mockDate = new Date('2023-01-01T00:00:00.000Z');
@@ -49,6 +60,7 @@ describe('Data Service Tests', () => {
     test('saveProfile calls setDoc with correct arguments', async () => {
         await dataService.saveProfile('test-user', mockProfile as any);
         expect(setDoc).toHaveBeenCalled();
+        expect(doc).toHaveBeenCalledWith({}, 'profiles', 'test-user');
     });
 
     test('getProfile returns data when snapshot exists', async () => {
@@ -59,6 +71,7 @@ describe('Data Service Tests', () => {
 
         const result = await dataService.getProfile('test-user');
         expect(result).toEqual(mockProfile);
+        expect(getDoc).toHaveBeenCalled();
     });
 
     test('getProfile returns null when snapshot does not exist', async () => {
@@ -69,5 +82,6 @@ describe('Data Service Tests', () => {
 
         const result = await dataService.getProfile('test-user');
         expect(result).toBeNull();
+        expect(getDoc).toHaveBeenCalled();
     });
 });

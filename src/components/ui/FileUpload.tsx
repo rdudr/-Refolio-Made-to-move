@@ -145,6 +145,72 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadComplete, onError }) =>
             <p style={{ fontSize: '0.9rem', opacity: 0.6 }}>
               Supports: JPEG, PNG, GIF, BMP, WebP, PDF (max 10MB)
             </p>
+            
+            {/* Demo button for development */}
+            <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Simulate successful OCR processing with demo data
+                  const demoData: ParsedResumeData = {
+                    personalInfo: {
+                      firstName: 'Demo',
+                      lastName: 'User',
+                      email: 'demo.user@example.com',
+                      phone: '555-0123',
+                      location: 'San Francisco, CA'
+                    },
+                    experience: [{
+                      id: 'demo-exp-1',
+                      title: 'Senior Software Engineer',
+                      organization: 'Tech Company',
+                      startDate: new Date('2020-01-01'),
+                      endDate: null,
+                      description: 'Built amazing applications',
+                      createdAt: new Date(),
+                      updatedAt: new Date()
+                    }],
+                    education: [{
+                      id: 'demo-edu-1',
+                      title: 'Computer Science',
+                      organization: 'University',
+                      degree: 'Bachelor of Science',
+                      startDate: new Date('2016-09-01'),
+                      endDate: new Date('2020-05-01'),
+                      createdAt: new Date(),
+                      updatedAt: new Date()
+                    }],
+                    skills: [{
+                      id: 'demo-skill-1',
+                      name: 'React',
+                      level: 4,
+                      category: 'technical',
+                      createdAt: new Date(),
+                      updatedAt: new Date()
+                    }],
+                    projects: []
+                  };
+                  
+                  if (onUploadComplete) {
+                    onUploadComplete(demoData);
+                  }
+                }}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                  border: '1px solid rgba(102, 126, 234, 0.4)',
+                  borderRadius: '6px',
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem'
+                }}
+              >
+                🎭 Try Demo Data
+              </button>
+              <p style={{ fontSize: '0.8rem', opacity: 0.5, marginTop: '0.5rem' }}>
+                Click to load sample resume data for testing
+              </p>
+            </div>
           </div>
         )}
       </div>

@@ -312,9 +312,9 @@ describe('Property 8: Data integrity during operations', () => {
 
         // If updates were captured, verify they have valid structure
         if (capturedUpdates) {
-          if (capturedUpdates.careerGaps) {
-            expect(Array.isArray(capturedUpdates.careerGaps)).toBe(true);
-            capturedUpdates.careerGaps.forEach(gap => {
+          if ((capturedUpdates as any).careerGaps) {
+            expect(Array.isArray((capturedUpdates as any).careerGaps)).toBe(true);
+            (capturedUpdates as any).careerGaps.forEach((gap: any) => {
               expect(gap).toHaveProperty('id');
               expect(gap).toHaveProperty('startDate');
               expect(gap).toHaveProperty('endDate');
@@ -326,12 +326,12 @@ describe('Property 8: Data integrity during operations', () => {
             });
           }
           
-          if (capturedUpdates.lastAnalyzed) {
-            expect(capturedUpdates.lastAnalyzed).toBeInstanceOf(Date);
+          if ((capturedUpdates as any).lastAnalyzed) {
+            expect((capturedUpdates as any).lastAnalyzed).toBeInstanceOf(Date);
           }
           
-          if (capturedUpdates.updatedAt) {
-            expect(capturedUpdates.updatedAt).toBeInstanceOf(Date);
+          if ((capturedUpdates as any).updatedAt) {
+            expect((capturedUpdates as any).updatedAt).toBeInstanceOf(Date);
           }
         }
       }

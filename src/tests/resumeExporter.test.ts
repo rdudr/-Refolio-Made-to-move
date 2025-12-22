@@ -1,3 +1,32 @@
+// Mock @react-pdf/renderer before importing the service
+jest.mock('@react-pdf/renderer', () => {
+    // Return a fake blob object to avoid potential missing Blob implementation in JSDOM
+    const mockToBlob = jest.fn(() => Promise.resolve({ type: 'application/pdf', size: 100 } as any));
+
+    // Define the pdf function directly, without jest.fn() wrapper if possible, or simple wrapper
+    const mockPdfFunction = jest.fn(() => ({
+        toBlob: mockToBlob
+    }));
+
+    return {
+        __esModule: true,
+        pdf: mockPdfFunction,
+        Document: jest.fn(({ children }) => ({ type: 'Document', children })),
+        Page: jest.fn(({ children }) => ({ type: 'Page', children })),
+        Text: jest.fn(({ children }) => ({ type: 'Text', children })),
+        View: jest.fn(({ children }) => ({ type: 'View', children })),
+        StyleSheet: {
+            create: jest.fn((styles) => styles)
+        },
+        Font: {
+            register: jest.fn()
+        },
+        default: {
+            pdf: mockPdfFunction
+        }
+    };
+});
+
 import React from 'react';
 import { resumeExporter } from '../services/resumeExporter';
 import { ProfileData, SkillCategory, GapSeverity } from '../types';
