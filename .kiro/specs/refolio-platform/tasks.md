@@ -168,7 +168,8 @@
     - Maintain data integrity during analysis
     - _Requirements: 3.5, 3.4_
 
-  - [-] 6.5 Write property test for data integrity during operations
+  - [ ] 6.5 Write property test for data integrity during operations
+
 
 
     - **Property 8: Data integrity during operations**

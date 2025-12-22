@@ -4,7 +4,7 @@
  * **Validates: Requirements 3.4, 6.3**
  */
 
-import { ProfileData, ExperienceEntry, EducationEntry, CareerGap } from '../types';
+import { ProfileData, ExperienceEntry, EducationEntry, CareerGap, Skill, Project } from '../types';
 import { movementAnalyzer } from '../services/movementAnalyzer';
 import { useGapRecalculation } from '../hooks/useGapRecalculation';
 import { renderHook } from '@testing-library/react';
@@ -19,12 +19,12 @@ const generateExperienceEntry = (id?: string): ExperienceEntry => {
   const endDate = Math.random() > 0.3 ? generateRandomDate(startDate) : null;
   
   return {
-    id: id || `exp-${Math.random().toString(36).substr(2, 9)}`,
-    title: `Job Title ${Math.random().toString(36).substr(2, 5)}`,
-    organization: `Company ${Math.random().toString(36).substr(2, 5)}`,
-    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substr(2, 3)}` : undefined,
-    description: Math.random() > 0.5 ? `Description ${Math.random().toString(36).substr(2, 10)}` : undefined,
-    achievements: Math.random() > 0.5 ? [`Achievement ${Math.random().toString(36).substr(2, 5)}`] : [],
+    id: id || `exp-${Math.random().toString(36).substring(2, 11)}`,
+    title: `Job Title ${Math.random().toString(36).substring(2, 7)}`,
+    organization: `Company ${Math.random().toString(36).substring(2, 7)}`,
+    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substring(2, 5)}` : undefined,
+    description: Math.random() > 0.5 ? `Description ${Math.random().toString(36).substring(2, 12)}` : undefined,
+    achievements: Math.random() > 0.5 ? [`Achievement ${Math.random().toString(36).substring(2, 7)}`] : [],
     startDate,
     endDate,
     createdAt: generateRandomDate(),
@@ -37,12 +37,12 @@ const generateEducationEntry = (id?: string): EducationEntry => {
   const endDate = Math.random() > 0.2 ? generateRandomDate(startDate) : null;
   
   return {
-    id: id || `edu-${Math.random().toString(36).substr(2, 9)}`,
-    title: `Program ${Math.random().toString(36).substr(2, 5)}`,
-    organization: `University ${Math.random().toString(36).substr(2, 5)}`,
-    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substr(2, 3)}` : undefined,
-    degree: `Degree ${Math.random().toString(36).substr(2, 5)}`,
-    fieldOfStudy: Math.random() > 0.5 ? `Field ${Math.random().toString(36).substr(2, 5)}` : undefined,
+    id: id || `edu-${Math.random().toString(36).substring(2, 11)}`,
+    title: `Program ${Math.random().toString(36).substring(2, 7)}`,
+    organization: `University ${Math.random().toString(36).substring(2, 7)}`,
+    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substring(2, 5)}` : undefined,
+    degree: `Degree ${Math.random().toString(36).substring(2, 7)}`,
+    fieldOfStudy: Math.random() > 0.5 ? `Field ${Math.random().toString(36).substring(2, 7)}` : undefined,
     gpa: Math.random() > 0.5 ? Math.random() * 4 : undefined,
     startDate,
     endDate,
@@ -51,39 +51,57 @@ const generateEducationEntry = (id?: string): EducationEntry => {
   };
 };
 
+const generateSkill = (id?: string): Skill => ({
+  id: id || `skill-${Math.random().toString(36).substring(2, 11)}`,
+  name: `Skill ${Math.random().toString(36).substring(2, 7)}`,
+  level: Math.floor(Math.random() * 5) + 1,
+  category: `Category ${Math.random().toString(36).substring(2, 7)}`,
+  createdAt: generateRandomDate(),
+  updatedAt: generateRandomDate()
+});
+
+const generateProject = (): Project => ({
+  name: `Project ${Math.random().toString(36).substring(2, 7)}`,
+  description: `Description ${Math.random().toString(36).substring(2, 12)}`,
+  technologies: [`Tech ${Math.random().toString(36).substring(2, 5)}`],
+  url: Math.random() > 0.5 ? `https://project${Math.random().toString(36).substring(2, 7)}.com` : undefined,
+  startDate: Math.random() > 0.5 ? generateRandomDate() : undefined,
+  endDate: Math.random() > 0.5 ? generateRandomDate() : undefined
+});
+
 const generateCareerGap = (id?: string): CareerGap => {
   const startDate = generateRandomDate();
   const endDate = generateRandomDate(startDate);
   const durationDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
   
   return {
-    id: id || `gap-${Math.random().toString(36).substr(2, 9)}`,
+    id: id || `gap-${Math.random().toString(36).substring(2, 11)}`,
     startDate,
     endDate,
     durationDays,
     type: Math.random() > 0.5 ? 'employment' : 'education',
     severity: durationDays > 365 ? 'major' : durationDays > 180 ? 'moderate' : 'minor',
     isResolved: Math.random() > 0.7,
-    notes: Math.random() > 0.5 ? `Note ${Math.random().toString(36).substr(2, 10)}` : undefined,
+    notes: Math.random() > 0.5 ? `Note ${Math.random().toString(36).substring(2, 12)}` : undefined,
     createdAt: generateRandomDate()
   };
 };
 
 const generateProfileData = (): ProfileData => ({
-  id: `profile-${Math.random().toString(36).substr(2, 9)}`,
+  id: `profile-${Math.random().toString(36).substring(2, 11)}`,
   personalInfo: {
-    firstName: `First${Math.random().toString(36).substr(2, 5)}`,
-    lastName: `Last${Math.random().toString(36).substr(2, 5)}`,
-    email: `test${Math.random().toString(36).substr(2, 5)}@example.com`,
+    firstName: `First${Math.random().toString(36).substring(2, 7)}`,
+    lastName: `Last${Math.random().toString(36).substring(2, 7)}`,
+    email: `test${Math.random().toString(36).substring(2, 7)}@example.com`,
     phone: Math.random() > 0.5 ? `555-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}` : undefined,
-    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substr(2, 3)}` : undefined,
-    linkedIn: Math.random() > 0.5 ? `https://linkedin.com/in/user${Math.random().toString(36).substr(2, 5)}` : undefined,
-    portfolio: Math.random() > 0.5 ? `https://portfolio${Math.random().toString(36).substr(2, 5)}.com` : undefined
+    location: Math.random() > 0.5 ? `City ${Math.random().toString(36).substring(2, 5)}` : undefined,
+    linkedIn: Math.random() > 0.5 ? `https://linkedin.com/in/user${Math.random().toString(36).substring(2, 7)}` : undefined,
+    portfolio: Math.random() > 0.5 ? `https://portfolio${Math.random().toString(36).substring(2, 7)}.com` : undefined
   },
   experience: Array.from({ length: Math.floor(Math.random() * 5) }, () => generateExperienceEntry()),
   education: Array.from({ length: Math.floor(Math.random() * 3) }, () => generateEducationEntry()),
-  skills: [],
-  projects: [],
+  skills: Array.from({ length: Math.floor(Math.random() * 5) }, () => generateSkill()),
+  projects: Array.from({ length: Math.floor(Math.random() * 3) }, () => generateProject()),
   careerGaps: Array.from({ length: Math.floor(Math.random() * 3) }, () => generateCareerGap()),
   version: Math.floor(Math.random() * 10) + 1,
   isComplete: Math.random() > 0.5,
@@ -120,7 +138,7 @@ describe('Property 8: Data integrity during operations', () => {
         expect(Array.isArray(gaps)).toBe(true);
         
         // Verify each gap has required properties
-        gaps.forEach(gap => {
+        gaps.forEach((gap: CareerGap) => {
           expect(gap).toHaveProperty('id');
           expect(gap).toHaveProperty('startDate');
           expect(gap).toHaveProperty('endDate');
