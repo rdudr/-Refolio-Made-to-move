@@ -1,0 +1,60 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--bg-dark);
+    /* Fallback */
+    background: var(--bg-gradient);
+}
+
+.shape {
+    position: absolute;
+    filter: blur(var(--blur-xl));
+    opacity: 0.6;
+    animation: float 10s ease-in-out infinite;
+}
+
+.shape1 {
+    top: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, var(--prism-1) 0%, transparent 70%);
+    animation-delay: 0s;
+}
+
+.shape2 {
+    bottom: -10%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, var(--prism-2) 0%, transparent 70%);
+    animation-delay: -3s;
+}
+
+.shape3 {
+    top: 40%;
+    left: 40%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, var(--prism-3) 0%, transparent 70%);
+    animation-delay: -6s;
+}
+
+.glassOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(100px);
+    /* Heavy blur to blend shapes */
+    -webkit-backdrop-filter: blur(100px);
+    z-index: 0;
+    background: rgba(5, 5, 17, 0.3);
+    /* Slight dim */
+}
