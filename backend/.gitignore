@@ -1,0 +1,45 @@
+# Environment variables - SENSITIVE!
+.env
+.env.local
+.env.*
+*.env
+
+# API Keys
+*.pem
+*.key
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+*.egg
+
+# Testing
+.pytest_cache/
+.hypothesis/
+htmlcov/
+.coverage
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Media/uploads (user data)
+media/
+uploads/
+
+# Static files (generated)
+staticfiles/
